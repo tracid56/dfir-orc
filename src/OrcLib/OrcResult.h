@@ -39,15 +39,14 @@ public:
     }
 
     bool is_ok() const {
-        return std::holds_alternative<_T>(m_result);
+        return std::holds_alternative<_ResultT>(m_result);
     }
-    bool is_err() const {
-        return !std::holds_alternative<_T>(m_result);
+    bool is_err() const { return !std::holds_alternative<_ResultT>(m_result);
     }
 
     _ResultT unwrap()
     {
-        std::visit([](auto&& arg) {
+        return std::visit([](auto&& arg) -> _ResultT {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, _ResultT>)
                     return std::move(arg);
@@ -55,8 +54,12 @@ public:
                     throw Orc::Exception(ExceptionSeverity::Continue, arg, L"unwrap called with error result");
                 else if constexpr (std::is_same_v<T, _ErrorT>)
                     throw Orc::Exception(ExceptionSeverity::Continue, E_FAIL, L"unwrap called with error result");
-                else
+                else if constexpr (std::is_same_v<T, std::monostate>)
                     throw Orc::Exception(ExceptionSeverity::Continue, E_FAIL, L"unwrap called with invalid result state");
+                else
+                    throw Orc::Exception(
+                        ExceptionSeverity::Fatal, E_FAIL, L"unwrap called with state");
+
             },
             m_result);
     }
@@ -85,14 +88,27 @@ public:
             m_result);
     }
 
+    _ErrorT err()
+    {
+        return std::visit(
+            [](auto&& arg) -> _ErrorT {
+                using T = std::decay_t<decltype(arg)>;
+                if constexpr (std::is_same_v<T, _ErrorT>)
+                    return std::move(arg);
+                else
+                    throw Orc::Exception(ExceptionSeverity::Fatal, E_FAIL, L"err() called with successful result");
+            },
+            m_result);
+    }
+
 private:
 
     std::variant<std::monostate, _ResultT, _ErrorT> m_result;
 
 };
 
-    using StringResult = Result<std::wstring>;
-    using PathResult = Result<std::filesystem::path>;
+using StringResult = Result<std::wstring>;
+using PathResult = Result<std::filesystem::path>;
 
 }
 
