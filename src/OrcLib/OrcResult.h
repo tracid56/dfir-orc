@@ -15,6 +15,15 @@
 #include <variant>
 #include <filesystem>
 
+
+#pragma managed(push, off)
+
+#if defined __has_include
+#    if __has_include(<stx/result.h>)
+#        include <stx/result.h>
+#   endif
+#else
+
 namespace Orc {
 
 template <typename _ResultT, typename _ErrorT = HRESULT> class Result
@@ -112,4 +121,6 @@ using PathResult = Result<std::filesystem::path>;
 
 }
 
-#pragma managed(push, off)
+#endif
+
+#pragma managed(pop)
