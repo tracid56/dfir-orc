@@ -10,29 +10,25 @@
 include(${ORC_ROOT}/cmake/Orc.cmake)
 orc_add_compile_options()
 
-set(SRC
-    "orc_output.cpp"
-    "OrcOptRowColumnTest.cpp"
-)
+set(SRC "OrcApacheOrc.cpp")
 
-set(SRC_COMMON
-    "resource.h"
-    "targetver.h"
-)
-
+set(SRC_COMMON "dllmain.cpp" "targetver.h")
 source_group(Common FILES ${SRC_COMMON} "stdafx.cpp" "stdafx.h")
 
-add_library(OrcOptRowColumnTest
+add_library(OrcApacheOrc
     SHARED
-        "stdafx.cpp"
         "stdafx.h"
+        "stdafx.cpp"
         ${SRC}
         ${SRC_COMMON}
 )
 
-target_link_libraries(OrcOptRowColumnTest PRIVATE OrcOptRowColumnLib)
+target_link_libraries(OrcApacheOrc
+    PUBLIC
+        OrcApacheOrcLib
+)
 
-set_target_properties(OrcOptRowColumnTest
+set_target_properties(OrcApacheOrc
     PROPERTIES
-        FOLDER "${ORC_ROOT_VIRTUAL_FOLDER}OrcOptRowColumn"
+        FOLDER "${ORC_ROOT_VIRTUAL_FOLDER}OrcApacheOrc"
 )

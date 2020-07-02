@@ -76,6 +76,8 @@ if(ORC_VCPKG_ROOT)
         fmt
         tlsh
         yara
+        rapidjson
+        stx
     )
 
     # Tools/rcedit specific dependencies
@@ -90,10 +92,6 @@ if(ORC_VCPKG_ROOT)
 
     if(ORC_BUILD_PARQUET)
         list(APPEND _PACKAGES arrow)
-    endif()
-
-    if(ORC_BUILD_JSON)
-        list(APPEND _PACKAGES rapidjson)
     endif()
 
     if(ORC_BUILD_CHAKRACORE)
