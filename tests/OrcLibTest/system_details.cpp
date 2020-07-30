@@ -100,9 +100,7 @@ public:
             if (volume.bSystem)
                 bHasSystem=true;
 
-            Assert::IsTrue(volume.Size > 0, L"Volume size should not be null");
             Assert::IsFalse(volume.Path.empty(), L"Volume path should not be empty");
-            Assert::IsFalse(volume.DeviceId.empty(), L"DeviceId is not present");
             Assert::IsFalse(volume.FileSystem.empty(), L"File system type should have a value");
         }
         Assert::IsTrue(bHasBoot, L"This system does not seem to have a boot volume");

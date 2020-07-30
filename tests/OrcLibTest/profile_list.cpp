@@ -118,7 +118,11 @@ public:
         Assert::IsTrue(profiles.is_ok());
         auto& profile_list = profiles.value();
 
-        Assert::IsFalse(profile_list.empty());
+        if (profile_list.empty())
+        {
+            log::Error(_L_, profiles.err_value(), L"Empty profile list, test not valid\r\n");
+            return;
+        }
     }
 };
 }  // namespace Orc::Test
