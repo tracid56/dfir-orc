@@ -101,7 +101,6 @@ public:
                 bHasSystem=true;
 
             Assert::IsFalse(volume.Path.empty(), L"Volume path should not be empty");
-            Assert::IsFalse(volume.FileSystem.empty(), L"File system type should have a value");
         }
         Assert::IsTrue(bHasBoot, L"This system does not seem to have a boot volume");
         Assert::IsTrue(bHasSystem, L"This system does not seem to have a system volume");
