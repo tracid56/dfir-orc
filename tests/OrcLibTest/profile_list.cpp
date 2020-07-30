@@ -120,7 +120,7 @@ public:
 
         if (profile_list.empty())
         {
-            log::Error(_L_, profiles.err_value(), L"Empty profile list, test not valid\r\n");
+            log::Error(_L_, E_FAIL, L"Empty profile list, test not valid\r\n");
             return;
         }
     }
