@@ -261,8 +261,7 @@ protected:
         {
         }
 
-        template <typename U>
-        void push_back(U u)
+        void push_back(const wchar_t& u)
         {
             if (previousWasQuote)
             {
@@ -270,11 +269,11 @@ protected:
 
                 if (quoteCount > 1)
                 {
-                    m_wrapped.push_back('"');
+                    m_wrapped.push_back(L'"');
                 }
             }
 
-            previousWasQuote = (u == '"');
+            previousWasQuote = (u == L'"');
 
             m_wrapped.push_back(u);
         }
@@ -302,7 +301,8 @@ protected:
         {
             if (strFormat.find(L"\"{}\"") != std::wstring::npos)
             {
-                fmt::format_to(std::back_inserter(EscapeQuoteInserter(buffer)), strFormat, args...);
+                auto escapedBuffer = EscapeQuoteInserter(buffer);
+                fmt::format_to(std::back_inserter(escapedBuffer), strFormat, args...);
             }
             else
             {
