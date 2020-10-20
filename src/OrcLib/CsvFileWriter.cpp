@@ -201,15 +201,13 @@ STDMETHODIMP Orc::TableOutput::CSV::Writer::WriteBOM()
 
         switch (m_Options->Encoding)
         {
-            case OutputSpec::Encoding::UTF8:
-            {
+            case OutputSpec::Encoding::UTF8: {
                 BYTE bom[3] = {0xEF, 0xBB, 0xBF};
                 if (auto hr = m_pByteStream->Write(bom, 3 * sizeof(BYTE), &bytesWritten); FAILED(hr))
                     return hr;
             }
             break;
-            case OutputSpec::Encoding::UTF16:
-            {
+            case OutputSpec::Encoding::UTF16: {
                 BYTE bom[2] = {0xFF, 0xFE};
                 if (auto hr = m_pByteStream->Write(bom, 2 * sizeof(BYTE), &bytesWritten); FAILED(hr))
                     return hr;

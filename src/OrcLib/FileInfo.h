@@ -146,7 +146,6 @@ protected:
     HRESULT WriteAuthenticodeCAThumbprint(ITableOutput& output);
 
 protected:
-
     const std::shared_ptr<VolumeReader> m_pVolReader;
 
     PEInfo m_PEInfo;

@@ -391,7 +391,7 @@ Result<std::vector<Orc::SystemDetails::CPUInformation>, HRESULT> Orc::SystemDeta
 
         if (auto name = WMI::GetProperty<std::wstring>(pclsObj, L"Name"); name.is_ok())
             cpu.Name = move(name).unwrap();
-        
+
         if (auto cores = WMI::GetProperty<ULONG32>(pclsObj, L"NumberOfCores"); cores.is_ok())
             cpu.Cores = std::move(cores).unwrap();
 
@@ -412,7 +412,7 @@ stx::Result<MEMORYSTATUSEX, HRESULT> Orc::SystemDetails::GetPhysicalMemory()
     MEMORYSTATUSEX statex;
     statex.dwLength = sizeof(statex);
 
-    if(!GlobalMemoryStatusEx(&statex))
+    if (!GlobalMemoryStatusEx(&statex))
         return Err(HRESULT_FROM_WIN32(GetLastError()));
 
     return Ok(std::move(statex));
@@ -720,7 +720,7 @@ Result<DWORD, HRESULT> Orc::SystemDetails::GetParentProcessId()
         return Ok(std::move((DWORD)std::move(parent_id).unwrap()));
 }
 
-stx::Result<std::wstring,HRESULT> Orc::SystemDetails::GetCmdLine()
+stx::Result<std::wstring, HRESULT> Orc::SystemDetails::GetCmdLine()
 {
     return Ok(std::wstring(GetCommandLineW()));
 }
@@ -884,8 +884,8 @@ stx::Result<std::vector<Orc::SystemDetails::PhysicalDrive>, HRESULT> Orc::System
 
         PhysicalDrive drive;
 
-        if(auto id = WMI::GetProperty<std::wstring>(pclsObj, L"DeviceID"); id.is_err())
-            continue; // If we can't get the deviceId, no need to add it...
+        if (auto id = WMI::GetProperty<std::wstring>(pclsObj, L"DeviceID"); id.is_err())
+            continue;  // If we can't get the deviceId, no need to add it...
         else
             drive.Path = move(id).unwrap();
 
@@ -931,7 +931,9 @@ stx::Result<std::vector<Orc::SystemDetails::MountedVolume>, HRESULT> Orc::System
 
     const auto& wmi = g_pDetailsBlock->wmi;
     auto result = wmi.Query(
-        L"SELECT Name,FileSystem,Label,DeviceID,DriveType,Capacity,FreeSpace,SerialNumber,BootVolume,SystemVolume,LastErrorCode,ErrorDescription FROM Win32_Volume");
+        L"SELECT "
+        L"Name,FileSystem,Label,DeviceID,DriveType,Capacity,FreeSpace,SerialNumber,BootVolume,SystemVolume,"
+        L"LastErrorCode,ErrorDescription FROM Win32_Volume");
     if (result.is_err())
         return Err(std::move(result.err_value()));
 
@@ -969,19 +971,26 @@ stx::Result<std::vector<Orc::SystemDetails::MountedVolume>, HRESULT> Orc::System
             switch (drive_type.value())
             {
                 case DRIVE_UNKNOWN:
-                    volume.Type = Drive_Unknown;break;
+                    volume.Type = Drive_Unknown;
+                    break;
                 case DRIVE_NO_ROOT_DIR:
-                    volume.Type = Drive_No_Root_Dir;break;
+                    volume.Type = Drive_No_Root_Dir;
+                    break;
                 case DRIVE_REMOVABLE:
-                    volume.Type = Drive_Removable;break;
+                    volume.Type = Drive_Removable;
+                    break;
                 case DRIVE_FIXED:
-                    volume.Type = Drive_Fixed;break;
+                    volume.Type = Drive_Fixed;
+                    break;
                 case DRIVE_REMOTE:
-                    volume.Type = Drive_Remote;break;
+                    volume.Type = Drive_Remote;
+                    break;
                 case DRIVE_CDROM:
-                    volume.Type = Drive_CDRom;break;
+                    volume.Type = Drive_CDRom;
+                    break;
                 case DRIVE_RAMDISK:
-                    volume.Type = Drive_RamDisk;break;
+                    volume.Type = Drive_RamDisk;
+                    break;
                 default:
                     volume.Type = Drive_Unknown;
             }
@@ -1028,8 +1037,7 @@ Result<std::vector<Orc::SystemDetails::QFE>, HRESULT> Orc::SystemDetails::GetOsQ
     }
 
     const auto& wmi = g_pDetailsBlock->wmi;
-    auto result = wmi.Query(
-        L"SELECT HotFixID,Description,Caption,InstalledOn FROM Win32_QuickFixEngineering");
+    auto result = wmi.Query(L"SELECT HotFixID,Description,Caption,InstalledOn FROM Win32_QuickFixEngineering");
     if (!result)
         return Err(std::move(result.err_value()));
 
@@ -1048,7 +1056,7 @@ Result<std::vector<Orc::SystemDetails::QFE>, HRESULT> Orc::SystemDetails::GetOsQ
         QFE qfe;
 
         if (auto id = WMI::GetProperty<std::wstring>(pclsObj, L"HotFixID"); !id)
-            continue; // without hotfix id...
+            continue;  // without hotfix id...
         else
             qfe.HotFixId = move(id).unwrap();
 
@@ -1057,7 +1065,6 @@ Result<std::vector<Orc::SystemDetails::QFE>, HRESULT> Orc::SystemDetails::GetOsQ
 
         if (auto url = WMI::GetProperty<std::wstring>(pclsObj, L"Caption"))
             qfe.URL = move(url).unwrap();
-
 
         if (auto date = WMI::GetProperty<std::wstring>(pclsObj, L"InstalledOn"))
             qfe.InstallDate = move(date).unwrap();
@@ -1087,12 +1094,12 @@ stx::Result<std::vector<Orc::SystemDetails::EnvVariable>, HRESULT> Orc::SystemDe
         {
             EnvVariable var;
             var.Name.assign(curVar, equals);
-            var.Value.assign(equals+1);
+            var.Value.assign(equals + 1);
             retval.push_back(std::move(var));
         }
         curVar += lstrlen(curVar) + 1;
     }
- 
+
     return Ok(std::move(retval));
 }
 
@@ -1103,7 +1110,7 @@ bool SystemDetails::IsWOW64()
     return g_pDetailsBlock->WOW64;
 }
 
-stx::Result<std::vector<Orc::SystemDetails::NetworkAdapter>,HRESULT> Orc::SystemDetails::GetNetworkAdapters()
+stx::Result<std::vector<Orc::SystemDetails::NetworkAdapter>, HRESULT> Orc::SystemDetails::GetNetworkAdapters()
 {
     if (auto hr = LoadSystemDetails(); FAILED(hr))
         return Err(std::move(hr));
@@ -1263,7 +1270,7 @@ stx::Result<Orc::SystemDetails::NetworkAddress, HRESULT> Orc::SystemDetails::Get
             break;
     }
 
-    Buffer<WCHAR,MAX_PATH> ip;
+    Buffer<WCHAR, MAX_PATH> ip;
     DWORD dwLength = MAX_PATH;
     ip.reserve(MAX_PATH);
 
@@ -1673,7 +1680,8 @@ HRESULT SystemDetails::LoadSystemDetails()
         SYSTEMTIME stNow;
         GetSystemTime(&stNow);
 
-        g_pDetailsBlock->strTimeStamp = fmt::format(L"{:04d}{:02d}{:02d}_{:02d}{:02d}{:02d}"sv,
+        g_pDetailsBlock->strTimeStamp = fmt::format(
+            L"{:04d}{:02d}{:02d}_{:02d}{:02d}{:02d}"sv,
             stNow.wYear,
             stNow.wMonth,
             stNow.wDay,
