@@ -31,8 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add compatibility with VS 2019 16.8
 
 ### Removed
+- Remove ImportData tool
+- Remove ChakraCore component
 - Remove dead code
-- Remove ImportData
 
 ## [10.0.15] - 2020-09-28
 ### Added
