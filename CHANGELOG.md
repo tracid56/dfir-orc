@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Remove ImportData tool
 - Remove ChakraCore component
+- Remove OrcSql component
 - Remove dead code
 
 ## [10.0.15] - 2020-09-28
