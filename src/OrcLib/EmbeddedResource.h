@@ -471,7 +471,7 @@ Orc::EmbeddedResource::ExtractToBuffer(const std::wstring& szImageFileRessourceI
             std::wstring strBinaryPath;
             if (FAILED(hr = LocateResource(MotherShip, ResName, BINARY(), hModule, hRes, strBinaryPath)))
             {
-                Log::Warn(L"Could not locate resource {} (code: {:#x})", szImageFileRessourceID, hr);
+                Log::Warn(L"Could not locate resource {} [{}]", szImageFileRessourceID, SystemError(hr));
                 return hr;
             }
 
@@ -480,7 +480,7 @@ Orc::EmbeddedResource::ExtractToBuffer(const std::wstring& szImageFileRessourceI
             if ((hFileResource = LoadResource(hModule, hRes)) == NULL)
             {
                 hr = HRESULT_FROM_WIN32(GetLastError());
-                Log::Warn(L"Could not load ressource (code: {:#x})", hr);
+                Log::Warn(L"Could not load ressource [{}]", SystemError(hr));
                 return hr;
             }
 
@@ -489,7 +489,7 @@ Orc::EmbeddedResource::ExtractToBuffer(const std::wstring& szImageFileRessourceI
             if ((lpData = LockResource(hFileResource)) == NULL)
             {
                 hr = HRESULT_FROM_WIN32(GetLastError());
-                Log::Warn(L"Could not lock ressource (code: {:#x})", hr);
+                Log::Warn(L"Could not lock ressource [{}]", SystemError(hr));
                 return hr;
             }
 
@@ -497,14 +497,14 @@ Orc::EmbeddedResource::ExtractToBuffer(const std::wstring& szImageFileRessourceI
             if ((dwSize = SizeofResource(hModule, hRes)) == 0)
             {
                 auto hr = HRESULT_FROM_WIN32(GetLastError());
-                Log::Error(L"Could not compute ressource size (code: {:#x})", hr);
+                Log::Error(L"Could not compute ressource size [{}]", SystemError(hr));
                 return hr;
             }
 
             if ((dwSize % sizeof(_T)) > 0)
             {
                 auto hr = HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
-                Log::Error(L"Resource's size is not compatible with buffer's type (code: {:#x})", hr);
+                Log::Error(L"Resource's size is not compatible with buffer's type [{}]", SystemError(hr));
                 return hr;
             }
 
@@ -530,7 +530,7 @@ Orc::EmbeddedResource::ExtractToBuffer(const std::wstring& szImageFileRessourceI
                 std::wstring strBinaryPath;
                 if (FAILED(hr = LocateResource(MotherShip, ResName, BINARY(), hModule, hRes, strBinaryPath)))
                 {
-                    Log::Warn(L"Could not locate resource (code: {:#x})", szImageFileRessourceID, hr);
+                    Log::Warn(L"Could not locate resource [{}]", szImageFileRessourceID, SystemError(hr));
                     return hr;
                 }
 

@@ -296,7 +296,7 @@ HRESULT SystemDetails::WriteDescriptionString()
     HRESULT hr = E_FAIL;
     if (FAILED(hr = LoadSystemDetails()))
     {
-        Log::Debug("Failed Orc::LoadSystemDetails (code: {:#x})", hr);
+        Log::Debug("Failed Orc::LoadSystemDetails [{}]", SystemError(hr));
         return hr;
     }
 
@@ -342,7 +342,7 @@ Result<std::vector<Orc::SystemDetails::CPUInformation>> Orc::SystemDetails::GetC
 
     if (auto hr = g_pDetailsBlock->wmi.Initialize())
     {
-        Log::Error(L"Failed to initialize WMI (code: {:#x})", hr);
+        Log::Error(L"Failed to initialize WMI [{}]", SystemError(hr));
         return SystemError(hr);
     }
 
@@ -444,7 +444,7 @@ HRESULT SystemDetails::WriteComputerName()
     HRESULT hr = E_FAIL;
     if (FAILED(hr = LoadSystemDetails()))
     {
-        Log::Debug("Failed Orc::LoadSystemDetails (code: {:#x})", hr);
+        Log::Debug("Failed Orc::LoadSystemDetails [{}]", SystemError(hr));
         return hr;
     }
 
@@ -479,7 +479,7 @@ HRESULT SystemDetails::WriteFullComputerName()
     HRESULT hr = E_FAIL;
     if (FAILED(hr = LoadSystemDetails()))
     {
-        Log::Debug("Failed Orc::LoadSystemDetails (code: {:#x})", hr);
+        Log::Debug("Failed Orc::LoadSystemDetails [{}]", SystemError(hr));
         return hr;
     }
 
@@ -527,7 +527,7 @@ HRESULT SystemDetails::WriteOrcComputerName()
     HRESULT hr = E_FAIL;
     if (FAILED(hr = LoadSystemDetails()))
     {
-        Log::Debug("Failed Orc::LoadSystemDetails (code: {:#x})", hr);
+        Log::Debug("Failed Orc::LoadSystemDetails [{}]", SystemError(hr));
         return hr;
     }
 
@@ -578,7 +578,7 @@ HRESULT SystemDetails::WriteOrcFullComputerName()
 
     if (FAILED(hr = LoadSystemDetails()))
     {
-        Log::Debug("Failed Orc::LoadSystemDetails (code: {:#x})", hr);
+        Log::Debug("Failed Orc::LoadSystemDetails [{}]", SystemError(hr));
         return hr;
     }
 
@@ -607,7 +607,7 @@ HRESULT SystemDetails::WriteProductType(ITableOutput& output)
     HRESULT hr = LoadSystemDetails();
     if (FAILED(hr))
     {
-        Log::Error(L"Failed to load system details (code: {:#x})", hr);
+        Log::Error(L"Failed to load system details [{}]", SystemError(hr));
         return hr;
     }
 
@@ -675,7 +675,7 @@ Result<DWORD> Orc::SystemDetails::GetParentProcessId()
 
     if (auto hr = g_pDetailsBlock->wmi.Initialize())
     {
-        Log::Error(L"Failed to initialize WMI (code: {:#x})", hr);
+        Log::Error(L"Failed to initialize WMI [{}]", SystemError(hr));
         return SystemError(hr);
     }
 
@@ -716,7 +716,7 @@ Result<std::wstring> Orc::SystemDetails::GetCmdLine(DWORD dwPid)
 
     if (auto hr = g_pDetailsBlock->wmi.Initialize())
     {
-        Log::Error(L"Failed to initialize WMI (code: {:#x})", hr);
+        Log::Error(L"Failed to initialize WMI [{}]", SystemError(hr));
         return SystemError(hr);
     }
 
@@ -842,7 +842,7 @@ Result<std::vector<Orc::SystemDetails::PhysicalDrive>> Orc::SystemDetails::GetPh
 
     if (auto hr = g_pDetailsBlock->wmi.Initialize())
     {
-        Log::Error(L"Failed to initialize WMI (code: {:#x})", hr);
+        Log::Error(L"Failed to initialize WMI [{}]", SystemError(hr));
         return SystemError(hr);
     }
 
@@ -909,7 +909,7 @@ Result<std::vector<Orc::SystemDetails::MountedVolume>> Orc::SystemDetails::GetMo
 
     if (auto hr = g_pDetailsBlock->wmi.Initialize())
     {
-        Log::Error(L"Failed to initialize WMI (code: {:#x})", hr);
+        Log::Error(L"Failed to initialize WMI [{}]", SystemError(hr));
         return SystemError(hr);
     }
 
@@ -1016,7 +1016,7 @@ Result<std::vector<Orc::SystemDetails::QFE>> Orc::SystemDetails::GetOsQFEs()
 
     if (auto hr = g_pDetailsBlock->wmi.Initialize())
     {
-        Log::Error(L"Failed to initialize WMI (code: {:#x})", hr);
+        Log::Error(L"Failed to initialize WMI [{}]", SystemError(hr));
         return SystemError(hr);
     }
 
