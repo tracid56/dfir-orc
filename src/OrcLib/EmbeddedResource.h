@@ -29,14 +29,14 @@ public:
     {
 
     public:
-        class ArchiveItem
+        struct ArchiveItem
         {
         public:
             std::wstring Name;
             std::wstring Path;
         };
 
-        typedef enum _EmbedType
+        enum class EmbedType
         {
             NameValuePair,
             File,
@@ -45,7 +45,7 @@ public:
             BinaryDeletion,
             ValuesDeletion,
             Void = -1
-        } EmbedType;
+        };
 
         EmbedType Type;
         std::wstring Name;
@@ -57,7 +57,7 @@ public:
         std::wstring ArchiveCompression;
 
     private:
-        EmbedSpec() { Type = Void; };
+        EmbedSpec() { Type = EmbedType::Void; };
 
     public:
         EmbedSpec(const EmbedSpec& anOther) = default;
@@ -69,7 +69,7 @@ public:
         static EmbedSpec AddNameValuePair(const std::wstring& Name, const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = Name;
             retval.Value = Value;
 
@@ -78,7 +78,7 @@ public:
         static EmbedSpec AddNameValuePair(std::wstring&& Name, std::wstring&& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             std::swap(retval.Name, Name);
             std::swap(retval.Value, Value);
             return retval;
@@ -86,7 +86,7 @@ public:
         static EmbedSpec AddBinary(std::wstring&& Name, CBinaryBuffer&& Value)
         {
             EmbedSpec retval;
-            retval.Type = Buffer;
+            retval.Type = EmbedType::Buffer;
             std::swap(retval.Name, Name);
             std::swap(retval.BinaryValue, Value);
             return retval;
@@ -94,7 +94,7 @@ public:
         static EmbedSpec AddBinary(const std::wstring& Name, const CBinaryBuffer& Value)
         {
             EmbedSpec retval;
-            retval.Type = Buffer;
+            retval.Type = EmbedType::Buffer;
             retval.Name = Name;
             retval.BinaryValue = Value;
             return retval;
@@ -103,7 +103,7 @@ public:
         static EmbedSpec AddFile(const std::wstring& Name, const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = File;
+            retval.Type = EmbedType::File;
             retval.Name = Name;
             retval.Value = Value;
             return retval;
@@ -111,7 +111,7 @@ public:
         static EmbedSpec AddFile(std::wstring&& Name, std::wstring&& Value)
         {
             EmbedSpec retval;
-            retval.Type = File;
+            retval.Type = EmbedType::File;
             std::swap(retval.Name, Name);
             std::swap(retval.Value, Value);
             return retval;
@@ -119,7 +119,7 @@ public:
         static EmbedSpec AddArchive(const std::wstring& Name, const std::vector<ArchiveItem>& Value)
         {
             EmbedSpec retval;
-            retval.Type = Archive;
+            retval.Type = EmbedType::Archive;
             retval.Name = Name;
             retval.ArchiveItems = Value;
             retval.ArchiveFormat = Archive::GetArchiveFormatString(Archive::GetArchiveFormat(Name));
@@ -132,7 +132,7 @@ public:
             const std::vector<ArchiveItem>& Value)
         {
             EmbedSpec retval;
-            retval.Type = Archive;
+            retval.Type = EmbedType::Archive;
             retval.Name = Name;
             retval.ArchiveFormat = Format;
             retval.ArchiveCompression = Compression;
@@ -146,7 +146,7 @@ public:
             std::vector<ArchiveItem>&& Value)
         {
             EmbedSpec retval;
-            retval.Type = Archive;
+            retval.Type = EmbedType::Archive;
             std::swap(retval.Name, Name);
             std::swap(retval.ArchiveFormat, Format);
             std::swap(retval.ArchiveCompression, Compression);
@@ -156,7 +156,7 @@ public:
         static EmbedSpec AddRun(const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN";
             retval.Value = Value;
             return retval;
@@ -164,7 +164,7 @@ public:
         static EmbedSpec AddRun(std::wstring&& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN";
             std::swap(retval.Value, Value);
             return retval;
@@ -172,7 +172,7 @@ public:
         static EmbedSpec AddRunX86(const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN32";
             retval.Value = Value;
             return retval;
@@ -180,7 +180,7 @@ public:
         static EmbedSpec AddRunX86(std::wstring&& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN32";
             std::swap(retval.Value, Value);
             return retval;
@@ -188,7 +188,7 @@ public:
         static EmbedSpec AddRunX64(std::wstring&& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN64";
             std::swap(retval.Value, Value);
             return retval;
@@ -196,7 +196,7 @@ public:
         static EmbedSpec AddRunX64(const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN64";
             retval.Value = Value;
             return retval;
@@ -204,7 +204,7 @@ public:
         static EmbedSpec AddRunArgs(const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN_ARGS";
             retval.Value = Value;
             return retval;
@@ -212,7 +212,7 @@ public:
         static EmbedSpec AddRun32Args(const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN32_ARGS";
             retval.Value = Value;
             return retval;
@@ -220,7 +220,7 @@ public:
         static EmbedSpec AddRun64Args(const std::wstring& Value)
         {
             EmbedSpec retval;
-            retval.Type = NameValuePair;
+            retval.Type = EmbedType::NameValuePair;
             retval.Name = L"RUN64_ARGS";
             retval.Value = Value;
             return retval;
@@ -229,28 +229,28 @@ public:
         static EmbedSpec AddValuesDeletion(const std::wstring& Name)
         {
             EmbedSpec retval;
-            retval.Type = ValuesDeletion;
+            retval.Type = EmbedType::ValuesDeletion;
             retval.Name = Name;
             return retval;
         };
         static EmbedSpec AddValuesDeletion(std::wstring&& Name)
         {
             EmbedSpec retval;
-            retval.Type = ValuesDeletion;
+            retval.Type = EmbedType::ValuesDeletion;
             std::swap(retval.Name, Name);
             return retval;
         };
         static EmbedSpec AddBinaryDeletion(const std::wstring& Name)
         {
             EmbedSpec retval;
-            retval.Type = BinaryDeletion;
+            retval.Type = EmbedType::BinaryDeletion;
             retval.Name = Name;
             return retval;
         };
         static EmbedSpec AddBinaryDeletion(std::wstring&& Name)
         {
             EmbedSpec retval;
-            retval.Type = BinaryDeletion;
+            retval.Type = EmbedType::BinaryDeletion;
             std::swap(retval.Name, Name);
             return retval;
         };
@@ -258,10 +258,10 @@ public:
 
         void DeleteMe()
         {
-            if (Type == NameValuePair)
-                Type = ValuesDeletion;
+            if (Type == EmbedType::NameValuePair)
+                Type = EmbedType::ValuesDeletion;
             else
-                Type = BinaryDeletion;
+                Type = EmbedType::BinaryDeletion;
             Value.clear();
             BinaryValue.RemoveAll();
             ArchiveItems.clear();
@@ -362,6 +362,21 @@ public:
         LPCWSTR szSDDL,
         const std::wstring& strTempDir,
         std::wstring& outputFile);
+
+    static HRESULT ExtractToDirectory(
+        const std::wstring& szImageFileRessourceID,
+        const std::wstring& Keyword,
+        LPCWSTR szSDDL,
+        const std::wstring& strTempDir,
+        std::vector<std::pair<std::wstring, std::wstring>>& outputFiles);
+
+    static HRESULT ExtractToDirectory(
+        const std::wstring& szImageFileRessourceID,
+        const std::wstring& Keyword,
+        LPCWSTR szSDDLFormat,
+        LPCWSTR szSID,
+        const std::wstring& strTempDir,
+        std::vector<std::pair<std::wstring, std::wstring>>& outputFiles);
 
     static HRESULT ExtractToBuffer(const std::wstring& szImageFileRessourceID, CBinaryBuffer& Buffer);
 
