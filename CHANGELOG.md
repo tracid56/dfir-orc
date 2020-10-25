@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add compatibility with clang and llvm tools
 - Add compatibility with ninja
 - Add compatibility with VS 2019 16.8
+- Add option ORC_BUILD_BOOST_STACKTRACE
 
 ### Removed
 - Remove ImportData tool
