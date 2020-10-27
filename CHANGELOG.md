@@ -1,8 +1,4 @@
 # Changelog
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [10.1.0] - 2020-xx-xx
 
@@ -14,7 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Log: dump log backtrace on critical errors
 - Log: use new log levels
 - Log: add utc timestamps (ISO 8601)
+- Improve DFIR-Orc temporary directory removal
 - OrcCommand: major refactor
+- README: add license section
 
 ### Fixed
 - GetThis: segfault when hash xml element is empty #69
@@ -22,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GetThis: segfault with MaxSampleCount=0 and reportall/hash options #8
 - Log: catch early logs in log files
 - vcpkg: fix shared build
-- Many other fixes
+- ... Check commit for a complete list of other fixes
 
 ### Added
 - Add '/Outline' cli option
@@ -30,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add compatibility with ninja
 - Add compatibility with VS 2019 16.8
 - Add option ORC_BUILD_BOOST_STACKTRACE
+- Add support archive hierarchies in resources
 
 ### Removed
 - Remove ImportData tool
